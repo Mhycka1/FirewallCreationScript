@@ -1,17 +1,16 @@
 #!/bin/bash
 if [ $# -ne 2 ];
-  then
+then
   echo "Usage: <source IP> <dest IP>"
   exit 1
 fi
-existing_rule=$(sudo iptables --check FORWARD --source $2 --destination $1
---jump DROP 2>&1)
+existing_rule=$(sudo iptables --check FORWARD --source $2 --destination $1 --jump DROP 2>&1)
 if [[ $? -eq 0 ]]
-  then
+then
   echo "Rule already exists, do you want to delete? (y/n)"
   read user_input
   if [[ "$user_input" == "y" ]]
-    then
+  then
     sudo iptables --delete FORWARD --source $2 --destination $1 --jump DROP
     echo "Rule removed: $1 -> $2"
   else
